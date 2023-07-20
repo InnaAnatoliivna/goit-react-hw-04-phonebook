@@ -1,11 +1,19 @@
-import css from 'components/phonebook/phonebook.module.css'
+import css from 'components/phonebook/phonebook.module.css';
 
-const Phonebook = ({ nameInputId, numerInputId, handleAddContact, handleChange, number, name }) => {
-
+const Phonebook = ({
+    nameInputId,
+    numerInputId,
+    handleAddContact,
+    handleChange,
+    number,
+    name
+}) => {
     return (
         <>
             <form className={css.form} onSubmit={handleAddContact}>
-                <label className={css.label} htmlFor={nameInputId}>Name</label>
+                <label className={css.label} htmlFor={nameInputId}>
+                    Name
+                </label>
                 <input
                     className={css.input}
                     type="text"
@@ -16,7 +24,9 @@ const Phonebook = ({ nameInputId, numerInputId, handleAddContact, handleChange, 
                     onChange={handleChange}
                     required
                 />
-                <label className={css.label} htmlFor={numerInputId}>Number</label>
+                <label className={css.label} htmlFor={numerInputId}>
+                    Number
+                </label>
                 <input
                     className={css.input}
                     type="tel"
@@ -27,11 +37,12 @@ const Phonebook = ({ nameInputId, numerInputId, handleAddContact, handleChange, 
                     onChange={handleChange}
                     required
                 />
-                <button type="submit" className={css.button}>Add contact</button>
+                <button type="submit" className={css.button}>
+                    Add contact
+                </button>
             </form>
         </>
-    )
-
-}
+    );
+};
 
 export default Phonebook;

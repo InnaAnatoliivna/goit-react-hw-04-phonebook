@@ -1,77 +1,66 @@
-import { Component } from 'react';
-import { getRandomId } from 'components/random-id'
-import Head from 'components/title/head';
-import Section from 'components/title/section-title';
-import Contacts from 'components/contacts/contacts';
-import SearchContact from 'components/SearchContact/SearchContact';
-import AddContactForm from 'components/add-contact/add-contact';
-import { saveToLocalStorage, loadContacts } from 'components/local-storage/local-storage';
+import React, { useState, useEffect } from 'react';
+import { getRandomId } from './random-id';
+import Head from './title/head';
+import Section from './title/section-title';
+import Contacts from './contacts/contacts';
+import SearchContact from './SearchContact/SearchContact';
+import AddContactForm from './add-contact/add-contact';
+import { saveToLocalStorage, loadContacts } from './local-storage/local-storage';
 
-export class App extends Component {
-  state = {
-    contacts: [],
-    filter: ''
-  }
+export const App = () => {
+  const [contacts, setContacts] = useState([]);
+  const [filter, setFilter] = useState('');
 
-  KEYlocalStorage = 'savedContacts';
+  const KEYlocalStorage = 'savedContacts';
 
-  componentDidMount() {
-    const getSaveContacts = loadContacts(this.KEYlocalStorage);
-    getSaveContacts && this.setState({ contacts: getSaveContacts });
-  }
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.contacts !== this.state.contacts) {
-      saveToLocalStorage(this.KEYlocalStorage, this.state.contacts);
+  useEffect(() => {
+    const savedContacts = loadContacts(KEYlocalStorage);
+    if (savedContacts && savedContacts.length > 0) {
+      setContacts(savedContacts);
     }
-  }
+  }, []);
 
-  addContact = (name, number) => {
-    const { contacts } = this.state;
+  useEffect(() => {
+    saveToLocalStorage(KEYlocalStorage, contacts);
+  }, [contacts]);
+
+  const addContact = (name, number) => {
     const idContact = getRandomId();
-    const dataFields = { name: name, number: number, id: idContact }
+    const dataFields = { name: name, number: number, id: idContact };
     const isContact = contacts.find(contact => contact.name === dataFields.name);
-    if (!isContact) {
-      this.setState(prevState => ({
-        contacts: [...prevState.contacts, dataFields]
-      }));
-    } else {
-      alert(`${name} is already in contacts`);
-    }
-  }
-
-  onDeleteContact = (id) => {
-    this.setState(prevState => ({
-      contacts: prevState.contacts.filter(contact => contact.id !== id)
-    }))
-  }
-
-  onFilteringInput = (e) => {
-    const searchValue = e.target.value.trim();
-    this.setState({ filter: searchValue })
-  }
-
-  render() {
-    const { contacts, filter } = this.state;
-    const filteredContacts = contacts
-      .filter(contact => contact.name.toLowerCase()
-        .includes(filter.toLowerCase()))
-
-    return (
-      <div className='container'>
-        <Head headTitle='Phonebook' />
-        <AddContactForm addContact={this.addContact} />
-        <Section title='Contacts'>
-          <SearchContact
-            handleSearchInput={this.onFilteringInput}
-            searchTitle='Find contacts by name'
-            arrayContacts={contacts}
-          />
-          <Contacts
-            arrayContacts={filteredContacts}
-            onDeleteContact={this.onDeleteContact}
-          />
-        </Section>
-      </div>
-    );
+    !isContact ?
+      setContacts(prevContacts => [...prevContacts, dataFields])
+      : alert(`${name} is already in contacts`);
   };
+
+  const onDeleteContact = (id) => {
+    setContacts(prevContacts => prevContacts.filter(contact => contact.id !== id));
+  };
+
+  const onFilteringInput = (e) => {
+    const searchValue = e.target.value.trim();
+    setFilter(searchValue);
+  };
+
+  const filteredContacts = contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()));
+
+  return (
+    <div className='container'>
+      <Head headTitle='Телефонна книга' />
+      <AddContactForm addContact={addContact} />
+      <Section title='Контакти'>
+        <SearchContact
+          handleSearchInput={onFilteringInput}
+          searchTitle='Знайти контакти за іменем'
+          arrayContacts={contacts}
+        />
+        <Contacts
+          arrayContacts={filteredContacts}
+          onDeleteContact={onDeleteContact}
+        />
+      </Section>
+    </div>
+  );
 };
+
+export default App;

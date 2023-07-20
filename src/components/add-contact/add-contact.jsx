@@ -1,42 +1,38 @@
 import Phonebook from 'components/phonebook/phonebook';
-import { Component } from 'react';
+import { useState } from 'react';
 import { getRandomId } from 'components/random-id'
 
 
-class AddContactForm extends Component {
-    nameInputId = getRandomId();
-    numerInputId = getRandomId();
+const AddContactForm = ({ addContact }) => {
+    const nameInputId = getRandomId();
+    const numerInputId = getRandomId();
 
-    state = {
-        name: '',
-        number: ''
-    }
+    const [name, setName] = useState('');
+    const [number, setNumber] = useState('');
 
-    onChangeInput = (evt) => {
+    const onChangeInput = evt => {
         const { name, value } = evt.target;
-        this.setState({ [name]: value })
+        if (name === 'name') setName(value);
+        if (name === 'number') setNumber(value);
     }
 
-    onAddToContacts = (e) => {
+    const onAddToContacts = e => {
         e.preventDefault();
-        const { name, number } = this.state;
-        this.props.addContact(name, number);
-        this.setState({ name: '', number: '' })
+        addContact(name, number);
+        setName('');
+        setNumber('');
     }
 
-    render() {
-        const { name, number } = this.state;
-        return (
-            <Phonebook
-                nameInputId={this.nameInputId}
-                numerInputId={this.numerInputId}
-                handleAddContact={this.onAddToContacts}
-                handleChange={this.onChangeInput}
-                name={name}
-                number={number}
-            />
-        )
-    }
+    return (
+        <Phonebook
+            nameInputId={nameInputId}
+            numerInputId={numerInputId}
+            handleAddContact={onAddToContacts}
+            handleChange={onChangeInput}
+            name={name}
+            number={number}
+        />
+    )
 }
 
 export default AddContactForm;
