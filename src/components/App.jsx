@@ -46,12 +46,12 @@ export const App = () => {
 
   return (
     <div className='container'>
-      <Head headTitle='Телефонна книга' />
+      <Head headTitle='Phonebook' />
       <AddContactForm addContact={addContact} />
-      <Section title='Контакти'>
+      <Section title='Contacts'>
         <SearchContact
           handleSearchInput={onFilteringInput}
-          searchTitle='Знайти контакти за іменем'
+          searchTitle='Find contacts by name'
           arrayContacts={contacts}
         />
         <Contacts
