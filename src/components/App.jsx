@@ -5,7 +5,7 @@ import Section from './title/section-title';
 import Contacts from './contacts/contacts';
 import SearchContact from './SearchContact/SearchContact';
 import AddContactForm from './add-contact/add-contact';
-import { saveToLocalStorage, loadContacts } from './local-storage/local-storage';
+import { saveToLocalStorage, loadContacts } from '../local-storage/local-storage';
 
 export const App = () => {
   const [contacts, setContacts] = useState([]);
@@ -49,15 +49,14 @@ export const App = () => {
       <Head headTitle='Phonebook' />
       <AddContactForm addContact={addContact} />
       <Section title='Contacts'>
-        <SearchContact
+        {contacts.length > 0 && (<SearchContact
           handleSearchInput={onFilteringInput}
           searchTitle='Find contacts by name'
-          arrayContacts={contacts}
-        />
-        <Contacts
+        />)}
+        {contacts.length > 0 ? (<Contacts
           arrayContacts={filteredContacts}
           onDeleteContact={onDeleteContact}
-        />
+        />) : (<p className='text-message'>The contact list is empty.</p>)}
       </Section>
     </div>
   );

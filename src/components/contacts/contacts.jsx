@@ -1,5 +1,4 @@
 import SavedContact from 'components/savedContact/savedContact'
-import css from 'components/contacts/contacts.module.css'
 
 const Contacts = ({ arrayContacts, onDeleteContact }) => {
 
@@ -11,22 +10,15 @@ const Contacts = ({ arrayContacts, onDeleteContact }) => {
     }
 
     return (
-        <div>
-            {arrayContacts.length > 0 ?
-                (<ul onClick={handleClick}>
-                    {arrayContacts.map(contact => (
-                        <SavedContact
-                            arrayContacts={arrayContacts}
-                            key={contact.id}
-                            contact={contact}
-                        />
-                    ))}
-
-                </ul>
-                )
-                : (<p className={css.text}>The contact list is empty.</p>)
-            }
-        </div>
+        <ul onClick={handleClick}>
+            {arrayContacts.map(contact => (
+                <SavedContact
+                    arrayContacts={arrayContacts}
+                    key={contact.id}
+                    contact={contact}
+                />
+            ))}
+        </ul>
     )
 }
 
