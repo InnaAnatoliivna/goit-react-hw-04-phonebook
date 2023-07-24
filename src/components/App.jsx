@@ -33,11 +33,9 @@ export const App = () => {
       : alert(`${name} is already in contacts`);
   };
 
-  const onDeleteContact = (id) => {
-    setContacts(prevContacts => prevContacts.filter(contact => contact.id !== id));
-  };
+  const onDeleteContact = id => setContacts(prevContacts => prevContacts.filter(contact => contact.id !== id));
 
-  const onFilteringInput = (e) => {
+  const onFilteringInput = e => {
     const searchValue = e.target.value.trim();
     setFilter(searchValue);
   };
